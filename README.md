@@ -1,3 +1,4 @@
 # library
 JavaScript Course - Project: Library
-Project creating a small library app.
+
+Project to create a small library app.
