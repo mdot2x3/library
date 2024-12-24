@@ -43,6 +43,28 @@ function buildTable() {
 
 buildTable();
 
+
+document.addEventListener("DOMContentLoaded", () => {
+    const dialog = document.querySelector("dialog");
+    const showButton = document.querySelector("#addBookButton");
+    const closeButton = dialog.querySelector("#closeButton");
+    const submitButton = dialog.querySelector("#submitButton");
+
+    showButton.addEventListener("click", () => {
+        dialog.showModal();
+    });
+
+    closeButton.addEventListener("click", () => {
+        dialog.close();
+    })
+
+    submitButton.addEventListener("click", () => {
+        
+    })
+})
+
+    
+
 /*
 console.log(myLibrary[0]);
 console.log(myLibrary[2]);

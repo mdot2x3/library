@@ -8,6 +8,23 @@
   <script src="main.js" defer></script>
 </head>
 <body>
+  <div class="button">
+    <button id="addBookButton">Add Book</button>
+    <dialog>
+      <form action="">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+        <label for="author">Author:</label><br>
+        <input type="text" id="author" name="author"><br>
+        <label for="pages">Pages:</label><br>
+        <input type="text" id="pages" name="pages"><br>
+        <label for="read">Have you read this book?:</label><br>
+        <input type="text" id="read" name="read"><br>
+      </form>
+      <button id="closeButton" autofocus>Close</button>
+      <button id="submitButton">Submit</button>
+    </dialog>
+  </div>
   <table>
     <tbody class="tbody">
       <tr>
