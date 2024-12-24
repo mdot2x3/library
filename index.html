@@ -8,7 +8,7 @@
   <script src="main.js" defer></script>
 </head>
 <body>
-  <div class="button">
+  <div class="modalDiv">
     <button id="addBookButton">Add Book</button>
     <dialog>
       <form action="">
@@ -21,8 +21,10 @@
         <label for="read">Have you read this book?:</label><br>
         <input type="text" id="read" name="read"><br>
       </form>
-      <button id="closeButton" autofocus>Close</button>
-      <button id="submitButton">Submit</button>
+      <div class="buttonDiv">
+        <button id="closeButton" autofocus>Close</button>
+        <button id="submitButton">Submit</button>
+      </div>
     </dialog>
   </div>
   <table>
