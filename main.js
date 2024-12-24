@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const showButton = document.querySelector("#addBookButton");
     const closeButton = dialog.querySelector("#closeButton");
     const submitButton = dialog.querySelector("#submitButton");
+    const inputs = dialog.querySelectorAll("input");
 
     showButton.addEventListener("click", () => {
         dialog.showModal();
@@ -56,10 +57,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeButton.addEventListener("click", () => {
         dialog.close();
+        inputs.forEach(input => input.value = "");
     })
 
-    submitButton.addEventListener("click", () => {
+    dialog.addEventListener("close", () => {
+        inputs.forEach(input => input.value = "");
+    });
+
+    submitButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        const title = document.querySelector("#title").value;
+        const author = document.querySelector("#author").value;
+        const pages = document.querySelector("#pages").value;
+        const read = document.querySelector("#read").value;
+
+        addBookToLibrary(title, author, pages, read);
         
+        const tbody = document.querySelector(".tbody");
+        const row = document.createElement("tr");
+
+        const properties = [title, author, pages, read];
+        properties.forEach(property => {
+            const cell = document.createElement("td");
+            cell.textContent = property;
+            row.appendChild(cell);
+        });
+        tbody.appendChild(row);
+
+        dialog.close();
+        inputs.forEach(input => input.value = "");
     })
 })
 
