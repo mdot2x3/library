@@ -1,17 +1,74 @@
-const myLibrary = [];
+// set array to 'let' to allow filter to remove an object by id
+// and then reassign the filtered array back to the array
+let myLibrary = [];
 
-function Book(title, author, pages, read) {
+// object constructor
+function Book(id, title, author, pages, read) {
+    // unique id for editing and deleting objects
+    this.id = id;
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
 }
 
+// add new object to array
 function addBookToLibrary(title, author, pages, read) {
-    const book = new Book(title, author, pages, read);
+    // give object a unique id
+    const id = crypto.randomUUID();
+    const book = new Book(id, title, author, pages, read);
     myLibrary.push(book);
+    // add new object as a row
+    addRowToTable(book);
 }
 
+// add a single row to the table
+function addRowToTable(book) {
+    const tbody = document.querySelector(".tbody");
+    const row = document.createElement("tr");
+    // set unique id as a data attribute to the row
+    row.setAttribute("data-id", book.id);
+
+    // create delete button
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Delete";
+    removeButton.addEventListener("click", () => {
+        // delete book
+        deleteBook(book.id);
+    });
+
+    // add delete button to row
+    const deleteCell = document.createElement("td");
+    deleteCell.appendChild(removeButton);
+    row.appendChild(deleteCell);
+
+    // add object values to row
+    const properties = [book.title, book.author, book.pages, book.read];
+    properties.forEach(property => {
+        const cell = document.createElement("td");
+        cell.textContent = property;
+        row.appendChild(cell);
+    });
+    
+    tbody.appendChild(row);
+}
+
+// delete book from the array and remove its row
+function deleteBook(id) {
+    // filter the book from the array, keep all objects without matching id
+    myLibrary = myLibrary.filter(book => book.id !== id);
+
+    // remove the row with the matching id from the table
+    // search for a table row who's data-id matches the id given
+    const row = document.querySelector(`tr[data-id="${id}"]`);
+    if (row) {
+        row.remove();
+    }
+}
+
+
+
+// sample table data for testing
 addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, "not read yet");
 addBookToLibrary("The Fellowship of the Ring", "J.R.R. Tolkien", 423, "read");
 addBookToLibrary("The Two Towers", "J.R.R. Tolkien", 352, "read");
@@ -23,30 +80,13 @@ addBookToLibrary("Children of Dune", "Frank Herbert", 444, "read");
 addBookToLibrary("God Emperor of Dune", "Frank Herbert", 496, "not read yet");
 addBookToLibrary("Heretics of Dune", "Frank Herbert", 480, "not read yet");
 
-function buildTable() {
-    const tbody = document.querySelector(".tbody");
-
-    for(const i of myLibrary) {
-        const row = document.createElement("tr");
-
-        for(const j in i) {
-            if(i.hasOwnProperty(j)) {
-                const cell = document.createElement("td");
-                const cellText = document.createTextNode(i[j]);
-                cell.appendChild(cellText);
-                row.appendChild(cell);
-            }
-        }
-        tbody.appendChild(row);
-    }
-}
-
-buildTable();
 
 
+// create a dialog modal pop-up that collects information for new objects to be added to table
 document.addEventListener("DOMContentLoaded", () => {
     const dialog = document.querySelector("dialog");
     const showButton = document.querySelector("#addBookButton");
+    // use dialog. to search specifically within the dialog field for these tags
     const closeButton = dialog.querySelector("#closeButton");
     const submitButton = dialog.querySelector("#submitButton");
     const inputs = dialog.querySelectorAll("input");
@@ -57,65 +97,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeButton.addEventListener("click", () => {
         dialog.close();
-        inputs.forEach(input => input.value = "");
     })
 
+    // whenever the .close() method is run, clear the input fields
     dialog.addEventListener("close", () => {
         inputs.forEach(input => input.value = "");
     });
 
+    // add new book on submit, adding book will also add row to table
     submitButton.addEventListener("click", (event) => {
+        // prevent default submit to server action
         event.preventDefault();
+        // collect values from each input (id associates with input field id value)
         const title = document.querySelector("#title").value;
         const author = document.querySelector("#author").value;
         const pages = document.querySelector("#pages").value;
         const read = document.querySelector("#read").value;
 
         addBookToLibrary(title, author, pages, read);
-        
-        const tbody = document.querySelector(".tbody");
-        const row = document.createElement("tr");
-
-        const properties = [title, author, pages, read];
-        properties.forEach(property => {
-            const cell = document.createElement("td");
-            cell.textContent = property;
-            row.appendChild(cell);
-        });
-        tbody.appendChild(row);
 
         dialog.close();
-        inputs.forEach(input => input.value = "");
     })
 })
-
-    
-
-/*
-console.log(myLibrary[0]);
-console.log(myLibrary[2]);
-console.log(myLibrary[5]);
-console.log(myLibrary[9]);
-*/
-
-/*
-const myLibrary = [];
-
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.info = function() {
-        return `${title} by ${author}, ${pages} pages, ${read}`
-    };
-}
-
-const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", 295, "not read yet");
-
-function addBookToLibrary() {
-    return
-}
-
-console.log(theHobbit.info());
-*/
