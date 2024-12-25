@@ -43,12 +43,29 @@ function addRowToTable(book) {
     row.appendChild(deleteCell);
 
     // add object values to row
-    const properties = [book.title, book.author, book.pages, book.read];
+    const properties = ["title", "author", "pages", "read"];
     properties.forEach(property => {
         const cell = document.createElement("td");
-        cell.textContent = property;
+        cell.textContent = book[property];
+        // add class to the read cell for easy access later
+        if(property === "read") {
+            cell.classList.add("read-cell");
+        }
         row.appendChild(cell);
     });
+
+    // create toggle button
+    const toggleButton = document.createElement("button");
+    toggleButton.textContent = "Change Status"
+    toggleButton.addEventListener("click", () => {
+        // toggle read status
+        toggleRead(book);
+    });
+
+    // add toggle button to row
+    const toggleCell = document.createElement("td");
+    toggleCell.appendChild(toggleButton);
+    row.appendChild(toggleCell);
     
     tbody.appendChild(row);
 }
@@ -63,6 +80,21 @@ function deleteBook(id) {
     const row = document.querySelector(`tr[data-id="${id}"]`);
     if (row) {
         row.remove();
+    }
+}
+
+function toggleRead(book) {
+    // toggle the read property (if b.r is read then make it not read yet, else read)
+    book.read = book.read === "read" ? "not read yet" : "read";
+
+    // find the row associated with the book
+    const row = document.querySelector(`tr[data-id="${book.id}"]`);
+    if(row) {
+        // update the read cell in row
+        const readCell = row.querySelector("td.read-cell");
+        if(readCell) {
+            readCell.textContent = book.read;
+        }
     }
 }
 
