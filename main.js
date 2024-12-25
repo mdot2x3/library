@@ -101,7 +101,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // whenever the .close() method is run, clear the input fields
     dialog.addEventListener("close", () => {
-        inputs.forEach(input => input.value = "");
+        inputs.forEach(input => {
+            // clear the checkbox 
+            if(input.type === "checkbox") {
+                input.checked = false;
+            } else {
+                input.value = ""
+            };
+        });    
     });
 
     // add new book on submit, adding book will also add row to table
@@ -112,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const title = document.querySelector("#title").value;
         const author = document.querySelector("#author").value;
         const pages = document.querySelector("#pages").value;
-        const read = document.querySelector("#read").value;
+        const read = document.querySelector("#read").checked ? "read" : "not read yet";
 
         addBookToLibrary(title, author, pages, read);
 
