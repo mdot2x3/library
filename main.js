@@ -153,6 +153,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const pages = document.querySelector("#pages").value;
         const read = document.querySelector("#read").checked ? "read" : "not read yet";
 
+        // add validation to ensure input fields are not left blank
+        if(!title || !author || !pages) {
+            // select entire form with all input fields
+            const form = document.querySelector("#modalForm");
+            // if any input is empty, form.checkValidity() will return false, !false = true and thus the block will execute
+            if (!form.checkValidity()) {
+                // trigger browser's validation messages
+                form.reportValidity();
+                // stop execution if any field is empty
+                return;
+            }
+        }
+
         addBookToLibrary(title, author, pages, read);
 
         dialog.close();
