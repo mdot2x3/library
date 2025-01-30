@@ -3,13 +3,20 @@
 let myLibrary = [];
 
 // object constructor
-function Book(id, title, author, pages, read) {
-    // unique id for editing and deleting objects
-    this.id = id;
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
+class Book {
+    constructor(id, title, author, pages, read) {
+        // unique id for editing and deleting objects
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
+
+    toggleRead() {
+        // toggle the read property (set this.read equal to -> if this.read is read then make it not read yet, else read)
+        this.read = this.read === "read" ? "not read yet" : "read";
+    }
 }
 
 // add new object to array
@@ -84,8 +91,8 @@ function deleteBook(id) {
 }
 
 function toggleRead(book) {
-    // toggle the read property (if b.r is read then make it not read yet, else read)
-    book.read = book.read === "read" ? "not read yet" : "read";
+    // call method inside book class
+    book.toggleRead();
 
     // find the row associated with the book
     const row = document.querySelector(`tr[data-id="${book.id}"]`);
